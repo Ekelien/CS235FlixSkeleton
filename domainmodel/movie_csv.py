@@ -14,7 +14,7 @@ class MovieFileCSVReader:
     def read_csv_file(self):
         csv_file=open(self.filename,encoding='utf-8')
         csv_reader=csv.DictReader(csv_file)
-        ls=[]
+
         for row in csv_reader:
             temp=dict(row)
 
@@ -36,3 +36,18 @@ class MovieFileCSVReader:
                 if genre not in self.dataset_of_genres:
                     self.dataset_of_genres.append(genre)
 
+    def get_dict_by_genre(self):
+        csv_file = open(self.filename, encoding='utf-8')
+        csv_reader = csv.DictReader(csv_file)
+        return_dic = {}
+        for row in csv_reader:
+            temp = dict(row)
+            movie = Movie(temp['Title'], temp['Year'])
+            for i in temp['Genre'].split(","):
+                genre = Genre(i.strip())
+                if genre not in return_dic:
+                    return_dic[genre] = [movie]
+                else:
+                    return_dic[genre].append(movie)
+                movie.add_genre(genre)
+        return return_dic

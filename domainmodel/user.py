@@ -1,5 +1,6 @@
 from domainmodel.movie import Movie
 from domainmodel.review import Review
+from domainmodel.genre import Genre
 
 
 class User:
@@ -7,6 +8,7 @@ class User:
         self.user_name = name
         self.password = password
         self.watched_movies = []
+        self.preference=[]
         self.reviews = []
         self.time_spent_watching_movies_minutes = 0
 
@@ -41,7 +43,7 @@ class User:
     def reviews(self):
         return self.__reviews
 
-    @watched_movies.setter
+    @reviews.setter
     def reviews(self, other):
         if type(other) is list and all((type(x) is Review) for x in other):
             self.__reviews = other
@@ -55,6 +57,15 @@ class User:
         if other >= 0:
             self.__time_spent = other
             return
+
+    @property
+    def preference(self):
+        return self.__preference
+
+    @preference.setter
+    def preference(self,other):
+        if type(other) is list and all((type(x) is Genre) for x in other):
+            self.__preference=other
 
     def __repr__(self):
         return f"<User {self.user_name}>"
@@ -80,5 +91,16 @@ class User:
     def add_review(self, review):
         if type(review) is Review:
             self.reviews.append(review)
+
+    def add_preference(self,other):
+        if type(other) is Genre:
+            if other not in self.preference:
+                self.preference.append(other)
+
+    def delete_preference(self,other):
+        if type(other) is Genre:
+            if other in self.preference:
+                self.preference.remove(other)
+
 
 
